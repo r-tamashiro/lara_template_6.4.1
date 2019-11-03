@@ -75,5 +75,15 @@ The Laravel framework is open-source software licensed under the [MIT license](h
 
 ## Usage
 
-* git clone --recursive git@github.com:r-tamashiro/lara_template_6.4.1.git
-* cp laradock_env laradock/.env
+```
+$ git clone --recursive git@github.com:r-tamashiro/lara_template_6.4.1.git
+$ cp .env.example .env
+$ cp laradock_env laradock/.env
+$ cp laradock
+$ docker-compose -p sample up --build -d nginx mysql redis workspace
+$ docker-compose -p sample exec --user=laradock workspace bash
+```
+
+```
+laradock@54bcb1022d02:/var/www$ composer install
+```
