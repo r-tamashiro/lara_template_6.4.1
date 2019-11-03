@@ -1,6 +1,8 @@
 steps:
 - name: "prooph/composer:7.2"
   args: ['install']
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'production']
 - name: 'ubuntu'
   entrypoint: 'bash'
   args: ['-c', 'sed -i -e s#__ENV__#$_ENV# app.yaml']
