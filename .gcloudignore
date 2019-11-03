@@ -17,3 +17,12 @@
 api_credentials.json
 # PHP Composer dependencies:
 vendor/
+tests/
+# Laradock
+laradock/
+laradock_env
+# npm
+node_modules
+
+cloudbuild.yaml.sample
+readme.md
