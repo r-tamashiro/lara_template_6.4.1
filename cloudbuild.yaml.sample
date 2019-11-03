@@ -1,0 +1,10 @@
+steps:
+- name: "prooph/composer:7.2"
+  args: ['install']
+- name: 'ubuntu'
+  entrypoint: 'bash'
+  args: ['-c', 'sed -i -e s#__ENV__#$_ENV# app.yaml']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'deploy', 'app.yaml', "--no-promote"]
+substitutions:
+  _ENV: DEV

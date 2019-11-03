@@ -1,0 +1,5 @@
+runtime: php72
+service: sample
+
+env_variables:
+  ENV: __ENV__
