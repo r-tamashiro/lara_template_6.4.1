@@ -1,6 +1,8 @@
 steps:
 - name: "prooph/composer:7.2"
   args: ['install']
+- name: "prooph/composer:7.2"
+  args: ['dump-autoload']
 - name: 'gcr.io/cloud-builders/npm'
   args: ['install']
 - name: 'gcr.io/cloud-builders/npm'
@@ -9,6 +11,6 @@ steps:
   entrypoint: 'bash'
   args: ['-c', 'sed -i -e s#__ENV__#$_ENV# app.yaml']
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy', 'app.yaml', "--no-promote"]
+  args: ['beta', 'app', 'deploy', 'app.yaml', "--no-cache"]
 substitutions:
   _ENV: DEV
