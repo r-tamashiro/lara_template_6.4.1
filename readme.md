@@ -80,7 +80,11 @@ $ git clone --recursive git@github.com:r-tamashiro/lara_template_6.4.1.git
 $ cp .env.example .env
 $ cp laradock_env laradock/.env
 $ cd laradock
-$ docker-compose -p sample up --build -d nginx mysql redis workspace
+
+$ docker-compose -p sample up --build -d nginx mysql workspace
+ or
+$ docker-compose -p sample up --build -d nginx mysql workspace
+
 $ docker-compose -p sample exec --user=laradock workspace bash
 ```
 

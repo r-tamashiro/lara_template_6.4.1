@@ -1,6 +1,10 @@
 runtime: php72
 service: sample
 
+handlers:
+  - url: /static
+    static_dir: public/static
+
 env_variables:
   ENV: __ENV__
   APP_NAME: Laravel
