@@ -1,16 +1,60 @@
 steps:
-- name: "prooph/composer:7.2"
+- id: "composer install"
+  name: "prooph/composer:7.2"
   args: ['install']
-- name: "prooph/composer:7.2"
+- id: "composer dump-autoload"
+  name: "prooph/composer:7.2"
   args: ['dump-autoload']
-- name: 'gcr.io/cloud-builders/npm'
+- id: "npm install"
+  name: 'gcr.io/cloud-builders/npm'
   args: ['install']
-- name: 'gcr.io/cloud-builders/npm'
+- id: "npm run production"
+  name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'production']
-- name: 'ubuntu'
+- id: "DB名 置換"
+  name: 'ubuntu'
+  entrypoint: 'bash'
+  args: ['-c', 'sed -i -e s#__DB_DATABASE__#$_DB_DATABASE# app.yaml']
+- id: "DB USERNAME 置換"
+  name: 'ubuntu'
+  entrypoint: 'bash'
+  args: ['-c', 'sed -i -e s#__DB_USERNAME__#$_DB_USERNAME# app.yaml']
+- id: "DB PASSWORD 置換"
+  name: 'ubuntu'
+  entrypoint: 'bash'
+  args: ['-c', 'sed -i -e s#__DB_PASSWORD__#$_DB_PASSWORD# app.yaml']
+- id: "置換終了"
+  name: 'ubuntu'
   entrypoint: 'bash'
   args: ['-c', 'sed -i -e s#__ENV__#$_ENV# app.yaml']
-- name: 'gcr.io/cloud-builders/gcloud'
+- id: 'AppEngineへデプロイ'
+  name: 'gcr.io/cloud-builders/gcloud'
   args: ['beta', 'app', 'deploy', 'app.yaml', "--no-cache"]
+- id: 'cloudsql-proxy 起動'
+  name: 'gcr.io/cloudsql-docker/gce-proxy'
+  args: ['/cloud_sql_proxy', '-dir=/cloudsql', '-instances=$_CLOUD_SQL_CONNECTION_NAME']
+  volumes:
+    - name: cloudsql
+      path: /cloudsql
+  waitFor:
+    - '-'
+- id: "Migrate"
+  name: "prooph/php:7.2-cli"
+  entrypoint: 'php'
+  args: ['./artisan', 'migrate', '--force']
+  volumes:
+    - name: cloudsql
+      path: /cloudsql
+  env:
+    - "DB_DATABASE=$_DB_DATABASE"
+    - "DB_USERNAME=$_DB_USERNAME"
+    - "DB_PASSWORD=$_DB_PASSWORD"
+    - "DB_SOCKET='/cloudsql/$_CLOUD_SQL_CONNECTION_NAME'"
+  waitFor:
+    - '置換終了'
 substitutions:
   _ENV: DEV
+  _DB_DATABASE: DB名
+  _DB_USERNAME: DBユーザー名
+  _DB_PASSWORD: DBパスワード
+  _CLOUD_SQL_CONNECTION_NAME: インスタンス接続名
