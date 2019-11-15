@@ -9,7 +9,7 @@ env_variables:
   ENV: __ENV__
   APP_NAME: Laravel
   APP_DEBUG: true
-  APP_KEY: base64:nAJQCmfQxsjbYYh0r2VQpM+y0m/G3pSausaJLmINckw=
+  APP_KEY: __APP_KEY__
   APP_STORAGE: /tmp
   APP_TIMEZONE: Asia/tokyo
   VIEW_COMPILED_PATH: /tmp
