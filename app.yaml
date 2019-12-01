@@ -1,5 +1,5 @@
 runtime: php72
-service: sample
+service: laravel6
 
 handlers:
   - url: /static
