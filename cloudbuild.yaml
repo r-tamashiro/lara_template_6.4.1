@@ -23,6 +23,10 @@ steps:
   name: 'ubuntu'
   entrypoint: 'bash'
   args: ['-c', 'sed -i -e s#__DB_PASSWORD__#$_DB_PASSWORD# app.yaml']
+- id: "DB SOCKET"
+  name: 'ubuntu'
+  entrypoint: 'bash'
+  args: ['-c', 'sed -i -e s#__DB_SOCKET__#/cloudsql/$_CLOUD_SQL_CONNECTION_NAME# app.yaml']
 - id: "APP KEY 置換"
   name: 'ubuntu'
   entrypoint: 'bash'
