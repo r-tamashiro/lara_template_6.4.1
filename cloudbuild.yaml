@@ -45,7 +45,7 @@ steps:
 - id: "Migrate"
   name: "prooph/php:7.2-cli"
   entrypoint: 'php'
-  args: ['./artisan', 'migrate', '--force']
+  args: ['./artisan', 'migrate:refresh', '--seed', h'--force']
   volumes:
     - name: cloudsql
       path: /cloudsql
